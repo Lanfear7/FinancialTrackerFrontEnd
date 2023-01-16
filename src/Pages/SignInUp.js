@@ -53,8 +53,9 @@ function SignInUp() {
     }
 
     function LogInDisplay(){
-            const [email, setEmail] = useState('')
-            const [password, setPassword] = useState('')
+        const [email, setEmail] = useState('')
+        const [password, setPassword] = useState('')
+        const [error, setError] = useState()
         function LogIn(){
             console.log('sese')
             axios.post('https://localhost:44320/api/User/Login', {
@@ -62,24 +63,31 @@ function SignInUp() {
                 Password : password,
               })
               .then(function (response) {
+                setError()
                 console.log(response);
               })
               .catch(function (error) {
-                console.log(error);
+                console.log(error.response.data);
+                if(typeof error.response.data !== 'object'){
+                    setError(error.response.data) 
+                }
               });
         }
 
         return (
             <div className='bg-FTblack min-h-screen w-full flex flex-wrap justify-center items-center'>
-                <div className='bg-FTgray w-11/12 h-full'>
-                    <h1 className='text-center mt-5 text-lg text-FTwhite'>Welcome back!</h1>
-                    <form className='h-[400px] p-10 flex flex-wrap'>
+                <div className='bg-FTgray w-11/12 h-[450px]'>
+                    <h1 className='text-center my-5 text-lg text-FTwhite'>Welcome back!</h1>
+                    <form className='h-[300px] px-10 flex flex-wrap'>
                         <input className='h-10 rounded-md' placeholder='Email' type='text' onChange={(e)=>setEmail(e.target.value)}></input>
                         <input className='h-10 rounded-md' placeholder='Password' type='password' onChange={(e)=>setPassword(e.target.value)}></input>
-                        <div className='basis-full' >
+                        <div className='basis-full h-14' >
                             <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack' type='button' value='LogIn' onClick={()=>LogIn()}></input>
-                        </div>  
+                        </div> 
                     </form>
+                    {
+                        error && <h1 className='px-10 text-red-600 text-xl'>{error}!</h1>
+                    } 
                 </div>
             </div>
         )
