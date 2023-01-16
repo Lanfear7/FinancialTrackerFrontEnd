@@ -1,6 +1,7 @@
 import React from 'react'
 import NavBar from '../Components/NavBar'
 import { useSpring, animated } from '@react-spring/web'
+import { Link } from 'react-router-dom'
 
 function LandingPage() {
     const textAnimation = useSpring({
@@ -29,8 +30,8 @@ function LandingPage() {
                 <animated.div 
                 style={buttonFadeInAnimation}
                 className='w-full flex justify-around'>
-                    <button className='bg-FTgray px-5 py-1 rounded-lg text-FTwhite'>SignUp</button>
-                    <button className='bg-FTgray px-5 py-1 rounded-lg text-FTwhite'>LogIn</button>
+                    <button className='bg-FTgray px-5 py-1 rounded-lg text-FTwhite'><Link to='/Authentication/SignUp'>SignUp</Link></button>
+                    <button className='bg-FTgray px-5 py-1 rounded-lg text-FTwhite'><Link to='/Authentication/LogIn'>LogIn</Link></button>
                 </animated.div>
             </div>
             

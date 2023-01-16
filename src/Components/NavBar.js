@@ -2,6 +2,7 @@ import React, { useState , useEffect } from 'react'
 import Logo from '../Images/DriftLogo.png'
 import { VscMenu } from 'react-icons/vsc'
 import { AiOutlineClose } from 'react-icons/ai'
+import { Link } from 'react-router-dom';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -34,9 +35,11 @@ function NavBar() {
     
   return (
     <nav className='bg-FTwhite w-full h-24 flex items-center'>
-        <figure className='m-0 w-24 h-full'>
-            <img className='w-full h-full object-cover' src={Logo}></img>
-        </figure>
+        <Link to="/">
+          <figure className='m-0 w-24 h-full'>
+              <img className='w-full h-full object-cover' src={Logo}></img>
+          </figure>
+        </Link>
         <h1 className='text-FTgray text-2xl'>Drift Finances</h1>
         {
             width < 900 &&
@@ -49,9 +52,8 @@ function NavBar() {
             <div className='absolute top-0 right-0 h-screen w-full bg-FTblack flex flex-wrap justify-end md:w-2/4 z-30'>
                 <AiOutlineClose className=' mr-3 mt-3 w-6 h-6 bg-red-500 rounded z-20' onClick={()=>{setSideNav(false)}}/>
                 <ul className='absolute h-full w-full flex justify-evenly flex-wrap'>
-                    <li className='basis-full flex items-center justify-center text-FTgreen text-2xl border-b border-FTgray hover:bg-FTgray'>Dashboard</li>
-                    <li className='basis-full flex items-center justify-center text-FTgreen text-2xl border-b border-FTgray hover:bg-FTgray'>SignIn</li>
-                    <li className='basis-full flex items-center justify-center text-FTgreen text-2xl border-b border-FTgray hover:bg-FTgray'>SignUp</li>
+                    <Link className='basis-full border-b border-FTgray flex items-center justify-center' to='/Authentication/LogIn'><li className='text-FTgreen text-2xl hover:bg-FTgray'>LogIn</li></Link>
+                    <Link className='basis-full border-b border-FTgray flex items-center justify-center' to='/Authentication/SignUp'><li className='text-FTgreen text-2xl hover:bg-FTgray'>SignUp</li></Link>
                 </ul>
             </div>
         }

@@ -1,14 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Dashboard from './Pages/Dashboard';
 import LandingPage from './Pages/LandingPage';
 import reportWebVitals from './reportWebVitals';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import SignInUp from './Pages/SignInUp';
+import Dashboard from './Pages/Dashboard';
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/Dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/Authentication/LogIn",
+    element: <SignInUp />,
+  },
+  {
+    path : "/Authentication/SignUp",
+    element : <SignInUp />
+  }
+])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <LandingPage />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
