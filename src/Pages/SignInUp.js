@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import NavBar from '../Components/NavBar'
 import axios from 'axios'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { addUser, removeUser } from '../Redux/Slices/userSlice'
+
 function SignInUp() {
+
+    const dispatch = useDispatch()
 
     function SignUpDisplay(){
         const [userName, setUserName] = useState('')
@@ -11,7 +16,6 @@ function SignInUp() {
         const [confirmPassword, setConfirmPassword] = useState('')
 
         function SignUp(){
-            console.log('first')
             axios.post('https://localhost:44320/api/User/Register', {
                 Username : userName,
                 Email : email,
@@ -28,7 +32,7 @@ function SignInUp() {
 
         return (
             <div className='bg-FTblack min-h-screen w-full flex flex-wrap justify-center items-center'>
-                <div className='bg-FTgray w-11/12 h-full'>
+                <div className='bg-FTgray w-11/12 h-full md:w-1/2'>
                     <h1 className='text-center mt-5 text-lg text-FTwhite'>Get started with a free account!</h1>
                     <form className='h-[400px] p-10 flex flex-wrap justify-center'>
                         <div className='basis-full flex justify-center'>
@@ -56,6 +60,7 @@ function SignInUp() {
         const [email, setEmail] = useState('')
         const [password, setPassword] = useState('')
         const [error, setError] = useState()
+
         function LogIn(){
             console.log('sese')
             axios.post('https://localhost:44320/api/User/Login', {
@@ -64,7 +69,9 @@ function SignInUp() {
               })
               .then(function (response) {
                 setError()
-                console.log(response);
+                if(response.data){
+                    dispatch(addUser(response.data))
+                }
               })
               .catch(function (error) {
                 console.log(error.response.data);
@@ -73,15 +80,18 @@ function SignInUp() {
                 }
               });
         }
-
         return (
             <div className='bg-FTblack min-h-screen w-full flex flex-wrap justify-center items-center'>
-                <div className='bg-FTgray w-11/12 h-[450px]'>
+                <div className='bg-FTgray w-11/12 h-[450px] md:w-1/2' >
                     <h1 className='text-center my-5 text-lg text-FTwhite'>Welcome back!</h1>
-                    <form className='h-[300px] px-10 flex flex-wrap'>
-                        <input className='h-10 rounded-md' placeholder='Email' type='text' onChange={(e)=>setEmail(e.target.value)}></input>
-                        <input className='h-10 rounded-md' placeholder='Password' type='password' onChange={(e)=>setPassword(e.target.value)}></input>
-                        <div className='basis-full h-14' >
+                    <form className='h-[300px] px-10 flex flex-wrap mt-24'>
+                        <div className='basis-full flex justify-center'>
+                            <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Email' type='text' onChange={(e)=>setEmail(e.target.value)}></input>
+                        </div>
+                        <div className='basis-full flex justify-center'>
+                            <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Password' type='password' onChange={(e)=>setPassword(e.target.value)}></input>
+                        </div>
+                        <div className='basis-full h-14 text-center' >
                             <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack' type='button' value='LogIn' onClick={()=>LogIn()}></input>
                         </div> 
                     </form>

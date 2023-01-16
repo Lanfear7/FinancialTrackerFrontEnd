@@ -17,9 +17,9 @@ function LandingPage() {
          delay: 900
     })
   return (
-    <div className='w-full min-h-screen bg-FTblack flex flex-wrap'>
+    <div className='w-full min-h-screen bg-FTblack flex flex-wrap justify-center'>
         <NavBar className='basis-full'/>
-        <div className='h-48 w-full flex flex-wrap justify-center'>
+        <div className='h-48 w-full flex flex-wrap justify-center md:w-1/2'>
             <animated.div
             style={textAnimation}
             >
