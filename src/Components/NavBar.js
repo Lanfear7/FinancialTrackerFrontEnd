@@ -2,37 +2,26 @@ import React, { useState , useEffect } from 'react'
 import Logo from '../Images/DriftLogo.png'
 import { VscMenu } from 'react-icons/vsc'
 import { AiOutlineClose } from 'react-icons/ai'
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux'
-
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height
-  };
-}
-
-function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return windowDimensions;
-}
-
+import { Link, redirect, Router  } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { removeUser } from '../Redux/Slices/userSlice'
+import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
     const [sideNav, setSideNav] = useState(false)
     const { height, width } = useWindowDimensions();
     const {user} = useSelector((state) => state.User)
-    
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    function LogOut(){
+      dispatch(removeUser())
+      return navigate('/')
+    }
+
+    console.log(user)
+
   return (
     <nav className='bg-FTwhite w-full h-24 flex items-center'>
       {
@@ -64,8 +53,10 @@ function NavBar() {
                     {
                       user.length  > 0 ?
                       <>
-                      <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen text-2xl hover:bg-FTgray'>Dashboard</li></Link>
-                        <Link className='basis-full border-b border-FTgray flex items-center justify-center'><li className='text-FTgreen text-2xl hover:bg-FTgray'>Logout</li></Link>
+                        <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen  text-2xl hover:bg-FTgray'>Dashboard</li></Link>
+                        <div className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>LogOut()}>
+                          <li className='text-FTgreen text-2xl hover:bg-FTgray' >Logout</li>
+                        </div>
                       </>
                       :
                       <>
@@ -85,7 +76,9 @@ function NavBar() {
               user.length  > 0 ?
               <>
                 <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen text-2xl '>Dashboard</li></Link>
-                <Link className='basis-full flex items-center justify-center'><li className='text-FTgreen text-2xl '>Logout</li></Link>
+               <div className='basis-full flex items-center justify-center'>
+                <li className='text-FTgreen text-2xl' onClick={()=>LogOut()}>Logout</li>
+                </div>
               </>
               :
               <>
@@ -98,6 +91,30 @@ function NavBar() {
         
     </nav>
   )
+}
+
+
+
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
+
+function useWindowDimensions() {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return windowDimensions;
 }
 
 export default NavBar

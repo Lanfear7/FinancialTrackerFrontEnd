@@ -4,9 +4,11 @@ import axios from 'axios'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { addUser, removeUser } from '../Redux/Slices/userSlice'
+import { useNavigate } from 'react-router-dom';
 
 function SignInUp() {
 
+    const navigate = useNavigate();
     const dispatch = useDispatch()
 
     function SignUpDisplay(){
@@ -71,9 +73,11 @@ function SignInUp() {
                 setError()
                 if(response.data){
                     dispatch(addUser(response.data))
+                    navigate('/Dashboard')
                 }
               })
               .catch(function (error) {
+                console.log(error)
                 console.log(error.response.data);
                 if(typeof error.response.data !== 'object'){
                     setError(error.response.data) 
@@ -84,7 +88,7 @@ function SignInUp() {
             <div className='bg-FTblack min-h-screen w-full flex flex-wrap justify-center items-center'>
                 <div className='bg-FTgray w-11/12 h-[450px] md:w-1/2' >
                     <h1 className='text-center my-5 text-lg text-FTwhite'>Welcome back!</h1>
-                    <form className='h-[300px] px-10 flex flex-wrap mt-24'>
+                    <form className='h-[250px] px-10 flex flex-wrap mt-16'>
                         <div className='basis-full flex justify-center'>
                             <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Email' type='text' onChange={(e)=>setEmail(e.target.value)}></input>
                         </div>
@@ -96,7 +100,7 @@ function SignInUp() {
                         </div> 
                     </form>
                     {
-                        error && <h1 className='px-10 text-red-600 text-xl'>{error}!</h1>
+                        error && <h1 className='px-10 text-red-600 text-xl text-center'>{error}!</h1>
                     } 
                 </div>
             </div>
