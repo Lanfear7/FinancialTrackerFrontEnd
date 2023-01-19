@@ -27,6 +27,7 @@ function SignInUp() {
         const [error, setError] = useState('')
 
         function SignUp(){
+            setError('Loading')
             if(userName === '' || email === '' || password === '' || confirmPassword === ''){
                 setError('Please fill every requirement')
                 return
@@ -94,6 +95,7 @@ function SignInUp() {
         const [error, setError] = useState()
 
         function LogIn(){
+            setError('Loading')
             axios.post('https://localhost:44320/api/User/Login', {
                 Email : email,
                 Password : password,

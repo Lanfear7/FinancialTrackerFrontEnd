@@ -9,8 +9,8 @@ import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
     const [sideNav, setSideNav] = useState(false)
-    const { height, width } = useWindowDimensions();
-    const {user} = useSelector((state) => state.User)
+    const { width } = useWindowDimensions();
+    const {JWT} = useSelector((state) => state.User)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -23,7 +23,7 @@ function NavBar() {
   return (
     <nav className='bg-FTwhite w-full h-24 flex items-center'>
       {
-        user.length > 0 ?
+        JWT  ?
         <Link to="/Dashboard">
           <figure className='m-0 w-24 h-full'>
               <img className='w-full h-full object-cover' src={Logo}></img>
@@ -49,7 +49,7 @@ function NavBar() {
                   <AiOutlineClose className=' mr-3 mt-3 w-6 h-6 bg-red-500 rounded z-20' onClick={()=>{setSideNav(false)}}/>
                   <ul className='absolute h-full w-full flex justify-evenly flex-wrap'>
                     {
-                      user.length  > 0 ?
+                      JWT ?
                       <>
                         <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen  text-2xl hover:bg-FTgray'>Dashboard</li></Link>
                         <div className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>LogOut()}>
@@ -58,7 +58,7 @@ function NavBar() {
                       </>
                       :
                       <>
-                       <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl hover:bg-FTgray'>LogIn</li></Link>
+                        <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl hover:bg-FTgray'>LogIn</li></Link>
                         <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/SignUp'><li className='text-FTgreen text-2xl hover:bg-FTgray'>SignUp</li></Link>
                       </>
                     }
@@ -71,7 +71,7 @@ function NavBar() {
           width > 900 &&
           <ul className='absolute top-0 right-10 flex justify-center w-72 h-24'>
             {
-              user.length  > 0 ?
+              JWT ?
               <>
                 <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen text-2xl '>Dashboard</li></Link>
                <div className='basis-full flex items-center justify-center'>
@@ -80,7 +80,7 @@ function NavBar() {
               </>
               :
               <>
-               <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl '>LogIn</li></Link>
+                <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl '>LogIn</li></Link>
                 <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/SignUp'><li className='text-FTgreen text-2xl '>SignUp</li></Link>
               </>
             }
