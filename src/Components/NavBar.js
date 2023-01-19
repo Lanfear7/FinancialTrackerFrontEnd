@@ -20,8 +20,6 @@ function NavBar() {
       return navigate('/')
     }
 
-    console.log(user)
-
   return (
     <nav className='bg-FTwhite w-full h-24 flex items-center'>
       {
@@ -71,7 +69,7 @@ function NavBar() {
         }
         {
           width > 900 &&
-          <ul className='absolute top-0 right-10 flex justify-center w-52 h-24'>
+          <ul className='absolute top-0 right-10 flex justify-center w-72 h-24'>
             {
               user.length  > 0 ?
               <>

@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import NavBar from '../Components/NavBar'
 import axios from 'axios'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { addUser, removeUser } from '../Redux/Slices/userSlice'
+import { useDispatch } from 'react-redux'
+import { addUser, currentUserData } from '../Redux/Slices/userSlice'
 import { useNavigate } from 'react-router-dom';
 
 function SignInUp() {
@@ -11,13 +11,30 @@ function SignInUp() {
     const navigate = useNavigate();
     const dispatch = useDispatch()
 
+    function parseJwt(token){
+        try {
+          return JSON.parse(atob(token.split('.')[1]));
+        } catch (e) {
+          return null;
+        }
+      };
+
     function SignUpDisplay(){
         const [userName, setUserName] = useState('')
         const [email, setEmail] = useState('')
         const [password, setPassword] = useState('')
         const [confirmPassword, setConfirmPassword] = useState('')
+        const [error, setError] = useState('')
 
         function SignUp(){
+            if(userName === '' || email === '' || password === '' || confirmPassword === ''){
+                setError('Please fill every requirement')
+                return
+            }
+            if(password !== confirmPassword){
+                setError('Please make sure both passwords match')
+                return
+            }
             axios.post('https://localhost:44320/api/User/Register', {
                 Username : userName,
                 Email : email,
@@ -25,18 +42,27 @@ function SignInUp() {
                 ConfirmPassword : confirmPassword
               })
               .then(function (response) {
-                console.log(response);
+                dispatch(addUser(response.data))
+                const userData = parseJwt(response.data)
+                dispatch(currentUserData(userData))
+                setError('')
+                navigate('/Dashboard')
               })
               .catch(function (error) {
                 console.log(error);
+                if(error.response.data){
+                    setError(error.response.data)
+                    return
+                }
+                setError("Can not create new user, please try again later.")
               });
         }
 
         return (
             <div className='bg-FTblack min-h-screen w-full flex flex-wrap justify-center items-center'>
-                <div className='bg-FTgray w-11/12 h-full md:w-1/2'>
+                <div className='bg-FTgray w-11/12 h-[500px] md:w-1/2'>
                     <h1 className='text-center mt-5 text-lg text-FTwhite'>Get started with a free account!</h1>
-                    <form className='h-[400px] p-10 flex flex-wrap justify-center'>
+                    <form className='h-[400px] p-10 pb-0 flex flex-wrap justify-center'>
                         <div className='basis-full flex justify-center'>
                             <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Username' type='text' onChange={(e)=>setUserName(e.target.value)}></input>
                         </div>
@@ -53,6 +79,10 @@ function SignInUp() {
                             <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack' type='button' value='SignUp' onClick={()=>SignUp()}></input>
                         </div>  
                     </form>
+                    {
+                        error.length > 0 &&
+                        <h1 className='px-10 text-red-600 text-xl text-center'>{error}</h1>
+                    }
                 </div>
             </div>
         )
@@ -64,7 +94,6 @@ function SignInUp() {
         const [error, setError] = useState()
 
         function LogIn(){
-            console.log('sese')
             axios.post('https://localhost:44320/api/User/Login', {
                 Email : email,
                 Password : password,
@@ -73,6 +102,8 @@ function SignInUp() {
                 setError()
                 if(response.data){
                     dispatch(addUser(response.data))
+                    const userData = parseJwt(response.data)
+                    dispatch(currentUserData(userData))
                     navigate('/Dashboard')
                 }
               })

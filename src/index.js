@@ -10,32 +10,49 @@ import {
 import SignInUp from './Pages/SignInUp';
 import Dashboard from './Pages/Dashboard';
 import { store } from './Redux/store'
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LandingPage />,
-  },
-  {
-    path: "/Dashboard",
-    element: <Dashboard />,
-  },
-  {
-    path: "/Authentication/LogIn",
-    element: <SignInUp />,
-  },
-  {
-    path : "/Authentication/SignUp",
-    element : <SignInUp />
-  },
-])
+
+
+
+function Router(){
+  const {user} = useSelector((state) =>state.User)
+
+  console.log(user)
+  if(user.length > 0){
+    
+  }
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <LandingPage />,
+    },
+    {
+      path: "/Dashboard",
+      element: <Dashboard />,
+    },
+    {
+      path: "/Authentication/LogIn",
+      element: <SignInUp />,
+    },
+    {
+      path : "/Authentication/SignUp",
+      element : <SignInUp />
+    },
+  ])
+
+  return (
+    <div>
+      <RouterProvider router={router} />
+    </div>
+  )
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <Router />
     </Provider>
   </React.StrictMode>
 );
