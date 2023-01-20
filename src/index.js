@@ -11,18 +11,16 @@ import SignInUp from './Pages/SignInUp';
 import Dashboard from './Pages/Dashboard';
 import { store } from './Redux/store'
 import { Provider, useSelector } from 'react-redux'
+import NotFound from './Pages/NotFound';
 
 
 
 
 function Router(){
-  const {user} = useSelector((state) =>state.User)
+  const {JWT} = useSelector((state) =>state.User)
 
-  console.log(user)
-  if(user.length > 0){
-    
-  }
-  const router = createBrowserRouter([
+  console.log(JWT)
+  const JWTrouter = createBrowserRouter([
     {
       path: "/",
       element: <LandingPage />,
@@ -39,11 +37,39 @@ function Router(){
       path : "/Authentication/SignUp",
       element : <SignInUp />
     },
+    {
+      path : "/*",
+      element : <NotFound />
+    },
+  ])
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <LandingPage />,
+    },
+    {
+      path: "/Authentication/LogIn",
+      element: <SignInUp />,
+    },
+    {
+      path : "/Authentication/SignUp",
+      element : <SignInUp />
+    },
+    {
+      path : "/*",
+      element : <NotFound />
+    },
   ])
 
   return (
     <div>
-      <RouterProvider router={router} />
+      {
+        JWT ? 
+          <RouterProvider router={JWTrouter} />
+        :
+          <RouterProvider router={router} />
+      }
     </div>
   )
 }
