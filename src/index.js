@@ -18,8 +18,7 @@ import NotFound from './Pages/NotFound';
 
 function Router(){
   const {JWT} = useSelector((state) =>state.User)
-
-  console.log(JWT)
+  
   const JWTrouter = createBrowserRouter([
     {
       path: "/",

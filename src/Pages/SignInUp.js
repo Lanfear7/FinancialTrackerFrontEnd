@@ -44,8 +44,6 @@ function SignInUp() {
               })
               .then(function (response) {
                 dispatch(addUser(response.data))
-                const userData = parseJwt(response.data)
-                dispatch(currentUserData(userData))
                 setError('')
                 navigate('/Dashboard')
               })
@@ -81,9 +79,8 @@ function SignInUp() {
                         </div>  
                     </form>
                     {
-                        error.length > 0 &&
-                        <h1 className='px-10 text-red-600 text-xl text-center'>{error}</h1>
-                    }
+                        error == "Loading" ? <h1 className='px-10 text-FTwhite text-xl text-center'>{error}...</h1> : <h1 className='px-10 text-red-600 text-xl text-center'>{error}</h1>
+                    } 
                 </div>
             </div>
         )
@@ -104,8 +101,6 @@ function SignInUp() {
                 setError()
                 if(response.data){
                     dispatch(addUser(response.data))
-                    const userData = parseJwt(response.data)
-                    dispatch(currentUserData(userData))
                     navigate('/Dashboard')
                 }
               })
@@ -133,7 +128,7 @@ function SignInUp() {
                         </div> 
                     </form>
                     {
-                        error && <h1 className='px-10 text-red-600 text-xl text-center'>{error}!</h1>
+                        error == "Loading" ? <h1 className='px-10 text-FTwhite text-xl text-center'>{error}...</h1> : <h1 className='px-10 text-red-600 text-xl text-center'>{error}</h1>
                     } 
                 </div>
             </div>

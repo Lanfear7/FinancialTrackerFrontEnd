@@ -24,12 +24,10 @@ function DashboardTracker() {
                             </tr>
                         </thead>
                         <tbody>
-                        {
                             <tr>
                                 <td className='pl-3'>2022-05-12</td>
                                 <td className='pl-3'>$23.42</td>
                             </tr>
-                        }
                         </tbody>
                     </table>
                     <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
@@ -55,6 +53,7 @@ function DashboardTracker() {
     const [trackerTransactions, setTrackerTransactions] = useState([])
     const [trackerTransactionCost, setTrackerTransactionCost] = useState()
     const [error, setError] = useState('')
+    const [titleError, setTitleError] = useState('')
 
     function addTrackerItem(){
         let currentDate = new Date().toJSON().slice(0, 10);
@@ -70,18 +69,31 @@ function DashboardTracker() {
         }
         setError('Please enter a number')
     }
+
+    function createTracker(){
+        if(trackerName == ''){
+           setTitleError('Please enter a tracker name') 
+           return
+        }
+        //send data
+        
+    }
+
     return (
             <div className='fixed top-0 w-full h-screen bg-FTgrayFade flex justify-center items-center'>
-                <div className='w-screen bg-FTwhite sm:h-3/4 sm:w-1/2 z-10 h-screen rounded-lg'>
+                <div className='w-screen bg-FTwhite sm:w-1/2 z-10 h-screen sm:max-h-[700px] rounded-lg'>
                     <div className='w-full flex justify-end relative right-5 top-5 basis-full h-16'>
                         <figure onClick={()=>setCreateTracker(false)} className='m-0 w-8 h-8 hover:cursor-pointer'>
                             <GrClose className='w-full h-full bg-FTgreen rounded-md relative'/>
                         </figure>
                     </div>
-                    <div className='mx-auto w-3/4 md:w-1/2 h-400px'>
+                    <div className='mx-auto w-3/4 md:w-1/2 lg:h-3/4 h-400px'>
                         <h1 className=' mb-5 text-center text-xl mt-24 md:mt-16'>New Tracker</h1>
-                        <label>Tracker Name : </label>
-                        <input type='text' className='border-b border-FTgreen bg-FTwhite ml-2' onChange={(e)=>setTrackerName(e.target.value)}></input>
+                        {
+                            titleError &&
+                            <h1 className='text-red-600'>{titleError}</h1>
+                        }
+                        <input type='text' className='border-b border-FTgreen bg-FTwhite ml-2 focus:border-FTgreen' placeholder='Tracker Name' onChange={(e)=>setTrackerName(e.target.value)}></input>
                         <div className='h-[200px] overflow-y-scroll my-5'>
                             {
                                 trackerTransactions.length > 0 ?
@@ -107,11 +119,12 @@ function DashboardTracker() {
                             <input type='text' placeholder='Transaction cost' className='border-b border-FTgreen bg-FTwhite ml-2' onChange={(e)=>setTrackerTransactionCost(e.target.value)} value={trackerTransactionCost}></input>
                             <button className='bg-FTgreen rounded-md px-5 hover:text-FTwhite' onClick={(e)=>{e.preventDefault();addTrackerItem();setTrackerTransactionCost('')}}>Add</button>
                         </form>
-                        <button className='bg-FTgreen rounded-md mt-5 px-5 hover:text-FTwhite'>Create Tracker</button>
                         {
                             error &&
-                            <h1>{error}</h1>
+                            <h1 className='text-red-600'>{error}</h1>
                         }
+                        <button className='bg-FTgreen rounded-md mt-5 px-5 hover:text-FTwhite' onClick={(e)=>{e.preventDefault();createTracker();}}>Create Tracker</button>
+                        
                     </div>
                 </div>
             </div> 
