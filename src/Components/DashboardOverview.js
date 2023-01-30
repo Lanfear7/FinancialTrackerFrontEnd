@@ -4,12 +4,6 @@ import { Chart } from "react-google-charts";
 import { useSelector } from 'react-redux'
 
 function DashboardOverview() {
-
-
-  
-
-
-
     const [monthlyIncome, setMonthlyIncome] = useState(0);
     const [monthlySavings, setMonthlySavings] = useState(0.00);
   
@@ -93,7 +87,7 @@ function DashboardOverview() {
        Income: monthlyIncome
     };
 
-    axios.post(`https://localhost:44320/api/Dashboard/CurrentUser/UpdateIncome/${user['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']}`,
+    axios.post(`https://localhost:44320/api/Dashboard/CurrentUser/UpdateIncome/${user.id}`,
     bodyParameters,
     config
     )

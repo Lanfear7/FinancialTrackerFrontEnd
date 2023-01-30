@@ -1,10 +1,32 @@
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { GrClose } from 'react-icons/gr'
+import { useSelector } from 'react-redux'
 
 function DashboardTracker() {
 
     const [createTracker, setCreateTracker] = useState(false)
+    const [userTrackers, setUserTrackers] = useState([])
 
+    const {user} = useSelector((state)=> state.User)
+    const {JWT} = useSelector((state)=>state.User)
+
+
+    useEffect(()=>{
+        const configuration = {
+            headers: { Authorization: `Bearer ${JWT}` }
+        }
+        axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/${user.id}`,
+        configuration
+        ).then((res) => {
+            if(res.status == 200){
+                const trackers = res.data['$values']
+                setUserTrackers(trackers)
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
+    },[])
 
   return (
     <div className='pb-5'>
@@ -14,28 +36,33 @@ function DashboardTracker() {
         </div>
         <div className='w-full h-full md:px-24 mt-10 flex flex-wrap justify-center'>
             {
-                <div className='w-[300px] bg-FTgray rounded-lg p-2 max-h-96'>
-                    <h1 className='text-FTwhite text-2xl table-auto text-center py-3 border-b border-FTgreen'>Food Tracker</h1>
-                    <table className='w-full table-auto text-FTwhite my-4'>
-                        <thead>
-                            <tr>
-                                <td className='pl-3 border-b border-FTblack text-lg'>Date</td>
-                                <td className='pl-3 border-b border-FTblack text-lg'>Cost</td> 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className='pl-3'>2022-05-12</td>
-                                <td className='pl-3'>$23.42</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
-                        <input type='text' placeholder='Cost' className='h-7'></input>
-                        <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%]'>Enter</button>
-                        <h1 className='text-red-600 text-xl'>error</h1>
-                    </div>
-                </div>
+                userTrackers.length > 0 &&
+                    userTrackers.map((tracker, i) => {
+                        return(
+                            <div className='w-[300px] bg-FTgray rounded-lg p-2 max-h-96'>
+                                <h1 className='text-FTwhite text-2xl table-auto text-center py-3 border-b border-FTgreen'>{tracker.name}</h1>
+                                <table className='w-full table-auto text-FTwhite my-4'>
+                                    <thead>
+                                        <tr>
+                                            <td className='pl-3 border-b border-FTblack text-lg'>Date</td>
+                                            <td className='pl-3 border-b border-FTblack text-lg'>Cost</td> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className='pl-3'>2022-05-12</td>
+                                            <td className='pl-3'>$23.42</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
+                                    <input type='text' placeholder='Cost' className='h-7'></input>
+                                    <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%]'>Enter</button>
+                                    <h1 className='text-red-600 text-xl'>error</h1>
+                                </div>
+                            </div>
+                        )
+                    })
             }
         </div>
 

@@ -106,7 +106,6 @@ function SignInUp() {
               })
               .catch(function (error) {
                 console.log(error)
-                console.log(error.response.data);
                 if(typeof error.response.data !== 'object'){
                     setError(error.response.data) 
                 }

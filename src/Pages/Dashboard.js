@@ -36,13 +36,12 @@ function Dashboard() {
     axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/${id}`,
     config
     ).then((res)=>{
-      if(res.data){
-        const user = res.data[0]
-        console.log(user)
-        dispatch(currentUserData(user))
+      if(res.data['$values']){
+        const user = res.data['$values']
+        dispatch(currentUserData(user[0]))
         return
       }
-      console.log('something went wrong not data')
+      console.log('something went wrong no data')
     }).catch((error)=>{
       console.log(error)
     })
