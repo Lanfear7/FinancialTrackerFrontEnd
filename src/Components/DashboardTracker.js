@@ -13,55 +13,71 @@ function DashboardTracker() {
 
 
     useEffect(()=>{
-        const configuration = {
-            headers: { Authorization: `Bearer ${JWT}` }
-        }
-        axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/${user.id}`,
-        configuration
-        ).then((res) => {
-            if(res.status == 200){
-                const trackers = res.data['$values']
-                setUserTrackers(trackers)
+        if(user.id){
+            const configuration = {
+                headers: { Authorization: `Bearer ${JWT}` }
             }
-        }).catch((error) => {
-            console.log(error)
-        })
-    },[])
+            console.log(user)
+            axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/${user.id}`,
+            configuration
+            ).then((res) => {
+                if(res.status == 200){
+                    const trackers = res.data['$values']
+                    setUserTrackers(trackers)
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    },[user])
 
+    console.log(userTrackers)
   return (
     <div className='pb-5'>
         <h1 className='text-4xl text-FTwhite lg:pl-16 mt-6'>Trackers</h1>
         <div className='text-FTwhite m-5 lg:pl-24'>
             <button onClick={(e)=>{e.preventDefault(); setCreateTracker(true)}} className='text-xl bg-FTgreen text-FTblack px-3 py-2 rounded-md w-[200px] hover:text-FTwhite hover:cursor-pointer shadow-xl'>Create New Tracker</button>
         </div>
-        <div className='w-full h-full md:px-24 mt-10 flex flex-wrap justify-center'>
+        <div className='w-full h-full md:px-24 mt-10 flex flex-wrap justify-evenly'>
             {
                 userTrackers.length > 0 &&
                     userTrackers.map((tracker, i) => {
-                        return(
-                            <div className='w-[300px] bg-FTgray rounded-lg p-2 max-h-96'>
-                                <h1 className='text-FTwhite text-2xl table-auto text-center py-3 border-b border-FTgreen'>{tracker.name}</h1>
-                                <table className='w-full table-auto text-FTwhite my-4'>
-                                    <thead>
-                                        <tr>
-                                            <td className='pl-3 border-b border-FTblack text-lg'>Date</td>
-                                            <td className='pl-3 border-b border-FTblack text-lg'>Cost</td> 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className='pl-3'>2022-05-12</td>
-                                            <td className='pl-3'>$23.42</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
-                                    <input type='text' placeholder='Cost' className='h-7'></input>
-                                    <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%]'>Enter</button>
-                                    <h1 className='text-red-600 text-xl'>error</h1>
+                        if(tracker.tracker.transactions){
+                            console.log(tracker.tracker.name)
+                            console.log(tracker.tracker.transactions.$values)
+                            return(
+                                <div className='w-[300px] bg-FTgray rounded-lg p-2 max-h-96 m-5'>
+                                    <h1 className='text-FTwhite text-2xl table-auto text-center py-3 border-b border-FTgreen'>{tracker.tracker.name}</h1>
+                                    <table className='w-full table-auto text-FTwhite my-4'>
+                                        <thead>
+                                            <tr>
+                                                <td className='pl-3 border-b border-FTblack text-lg'>Date</td>
+                                                <td className='pl-3 border-b border-FTblack text-lg'>Cost</td> 
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                tracker.tracker.transactions.$values.map((transaction, i)=>{
+                                                    return(
+                                                        <tr>
+                                                            <td>{transaction.dateTime.slice(0, -12)}</td>
+                                                            <td>${transaction.amount}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                            
+                                        </tbody>
+                                    </table>
+                                    <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
+                                        <input type='text' placeholder='Cost' className='h-7'></input>
+                                        <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%]'>Enter</button>
+                                        <h1 className='text-red-600 text-xl'>error</h1>
+                                    </div>
                                 </div>
-                            </div>
-                        )
+                            )
+                        }
+                        return <></>
                     })
             }
         </div>

@@ -107,6 +107,10 @@ function SignInUp() {
               .catch(function (error) {
                 console.log(error)
                 if(typeof error.response.data !== 'object'){
+                    if(error.response.status == 500){
+                        setError('Server Error Try Again Later.')
+                        return
+                    }
                     setError(error.response.data) 
                 }
               });
