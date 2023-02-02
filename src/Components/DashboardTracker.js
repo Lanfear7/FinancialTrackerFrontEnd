@@ -22,8 +22,14 @@ function DashboardTracker() {
             configuration
             ).then((res) => {
                 if(res.status == 200){
-                    const trackers = res.data['$values']
-                    setUserTrackers(trackers)
+                    const userTrackersTransactions = res.data['$values']
+                    let trackerTransactionsArray = []
+                    userTrackersTransactions.forEach(tracker => {
+                        if(tracker.tracker.name){
+                            trackerTransactionsArray.push(tracker)
+                        }
+                    });
+                    setUserTrackers(trackerTransactionsArray)
                 }
             }).catch((error) => {
                 console.log(error)
@@ -42,9 +48,9 @@ function DashboardTracker() {
             {
                 userTrackers.length > 0 &&
                     userTrackers.map((tracker, i) => {
-                        if(tracker.tracker.transactions){
-                            console.log(tracker.tracker.name)
-                            console.log(tracker.tracker.transactions.$values)
+                        console.log(tracker)
+                        if(tracker.tracker){
+                            console.log(tracker)
                             return(
                                 <div className='w-[300px] bg-FTgray rounded-lg p-2 max-h-96 m-5'>
                                     <h1 className='text-FTwhite text-2xl table-auto text-center py-3 border-b border-FTgreen'>{tracker.tracker.name}</h1>
@@ -57,6 +63,7 @@ function DashboardTracker() {
                                         </thead>
                                         <tbody>
                                             {
+                                                tracker.tracker.transactions?
                                                 tracker.tracker.transactions.$values.map((transaction, i)=>{
                                                     return(
                                                         <tr>
@@ -65,6 +72,8 @@ function DashboardTracker() {
                                                         </tr>
                                                     )
                                                 })
+                                                :
+                                                <></>
                                             }
                                             
                                         </tbody>
