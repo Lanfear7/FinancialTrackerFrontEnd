@@ -8,6 +8,8 @@ function DashboardTracker() {
     const [createTracker, setCreateTracker] = useState(false)
     const [userTrackers, setUserTrackers] = useState([])
 
+    const [getTrackerError, setGetTrackerError] = useState()
+
     const {user} = useSelector((state)=> state.User)
     const {JWT} = useSelector((state)=>state.User)
 
@@ -17,7 +19,7 @@ function DashboardTracker() {
             const configuration = {
                 headers: { Authorization: `Bearer ${JWT}` }
             }
-            console.log(user)
+            //console.log(user)
             axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/${user.id}`,
             configuration
             ).then((res) => {
@@ -33,11 +35,13 @@ function DashboardTracker() {
                 }
             }).catch((error) => {
                 console.log(error)
+                if(error.response.data){
+                    setGetTrackerError("No Trackers Found")
+                }
             })
         }
     },[user])
 
-    console.log(userTrackers)
   return (
     <div className='pb-5'>
         <h1 className='text-4xl text-FTwhite lg:pl-16 mt-6'>Trackers</h1>
@@ -46,11 +50,9 @@ function DashboardTracker() {
         </div>
         <div className='w-full h-full md:px-24 mt-10 flex flex-wrap justify-evenly'>
             {
-                userTrackers.length > 0 &&
+                userTrackers.length > 0 ?
                     userTrackers.map((tracker, i) => {
-                        console.log(tracker)
                         if(tracker.tracker){
-                            console.log(tracker)
                             return(
                                 <div className='w-[300px] bg-FTgray rounded-lg p-2 max-h-96 m-5'>
                                     <h1 className='text-FTwhite text-2xl table-auto text-center py-3 border-b border-FTgreen'>{tracker.tracker.name}</h1>
@@ -80,7 +82,7 @@ function DashboardTracker() {
                                     </table>
                                     <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
                                         <input type='text' placeholder='Cost' className='h-7'></input>
-                                        <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%]'>Enter</button>
+                                        <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%] hover:text-FTwhite'>Enter</button>
                                         <h1 className='text-red-600 text-xl'>error</h1>
                                     </div>
                                 </div>
@@ -88,6 +90,10 @@ function DashboardTracker() {
                         }
                         return <></>
                     })
+                :
+                <div>
+                    <h1 className='text-FTwhite text-xl'>Create A New Tracker</h1>
+                </div>
             }
         </div>
 
@@ -133,20 +139,20 @@ function DashboardTracker() {
 
     return (
             <div className='fixed top-0 w-full h-screen bg-FTgrayFade flex justify-center items-center'>
-                <div className='w-screen bg-FTwhite sm:w-1/2 z-10 h-screen sm:max-h-[700px] rounded-lg'>
+                <div className='w-screen sm:w-[500px] bg-FTwhite text-FTwhite border border-FTwhite z-10 h-screen sm:max-h-[625px] rounded-lg'>
                     <div className='w-full flex justify-end relative right-5 top-5 basis-full h-16'>
                         <figure onClick={()=>setCreateTracker(false)} className='m-0 w-8 h-8 hover:cursor-pointer'>
                             <GrClose className='w-full h-full bg-FTgreen rounded-md relative'/>
                         </figure>
                     </div>
-                    <div className='mx-auto w-3/4 md:w-1/2 lg:h-3/4 h-400px'>
+                    <div className='mx-auto w-[300px] sm:w-[400px] px-5 rounded-md h-400px border bg-FTgray border-FTwhite pb-10 mt-10 sm:mt-0'>
                         <h1 className=' mb-5 text-center text-xl mt-24 md:mt-16'>New Tracker</h1>
                         {
                             titleError &&
                             <h1 className='text-red-600'>{titleError}</h1>
                         }
-                        <input type='text' className='border-b border-FTgreen bg-FTwhite ml-2 focus:border-FTgreen' placeholder='Tracker Name' onChange={(e)=>setTrackerName(e.target.value)}></input>
-                        <div className='h-[200px] overflow-y-scroll my-5'>
+                        <input type='text' className='border-b border-FTgreen bg-FTwhite ml-2 focus:border-FTgreen text-FTblack' placeholder='Tracker Name' onChange={(e)=>setTrackerName(e.target.value)}></input>
+                        <div className='h-[200px] overflow-y-scroll my-5 bg-FTwhite text-FTgray'>
                             {
                                 trackerTransactions.length > 0 ?
                                     <ul>
@@ -163,12 +169,12 @@ function DashboardTracker() {
                                     </ul>
                                 :
                                     <div className='w-full h-full flex justify-center items-center'>
-                                        <h1>No transactions in tracker yet...</h1>
+                                        <h1>No Transactions Yet...</h1>
                                     </div>
                             }
                         </div>
                         <form className='w-full flex justify-between'>
-                            <input type='text' placeholder='Transaction cost' className='border-b border-FTgreen bg-FTwhite ml-2' onChange={(e)=>setTrackerTransactionCost(e.target.value)} value={trackerTransactionCost}></input>
+                            <input type='text' placeholder='Transaction Cost' className='border-b border-FTgreen bg-FTwhite ml-2 text-FTblack' onChange={(e)=>setTrackerTransactionCost(e.target.value)} value={trackerTransactionCost}></input>
                             <button className='bg-FTgreen rounded-md px-5 hover:text-FTwhite' onClick={(e)=>{e.preventDefault();addTrackerItem();setTrackerTransactionCost('')}}>Add</button>
                         </form>
                         {
