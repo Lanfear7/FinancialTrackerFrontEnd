@@ -19,8 +19,11 @@ function DashboardOverview() {
     let config = {
       headers: { Authorization: `Bearer ${JWT}` }
     }
-
     useEffect(()=>{
+      if(!user){
+        //if user = NOTHING break if user is nothing they will get 404 page
+        return
+      }
       axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/${user.id}`,
       config
       ).then((res)=>{

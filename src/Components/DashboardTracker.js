@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 function DashboardTracker() {
 
     const [createTracker, setCreateTracker] = useState(false)
+    const [queryTrackerTrigger, setQueryTrackerTrigger] = useState(false)
     const [userTrackers, setUserTrackers] = useState([])
 
     const [getTrackerError, setGetTrackerError] = useState()
@@ -19,7 +20,7 @@ function DashboardTracker() {
             const configuration = {
                 headers: { Authorization: `Bearer ${JWT}` }
             }
-            //console.log(user)
+
             axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/${user.id}`,
             configuration
             ).then((res) => {
@@ -40,7 +41,7 @@ function DashboardTracker() {
                 }
             })
         }
-    },[user])
+    },[user, queryTrackerTrigger])
 
   return (
     <div className='pb-5'>
@@ -119,8 +120,8 @@ function DashboardTracker() {
             setError() 
             let currentTransactionCost = parseFloat(trackerTransactionCost).toFixed(2)
             let setTrackerTransactionItem = {
-                'Date': currentDate,
-                'Cost': currentTransactionCost
+                'Amount': currentTransactionCost,
+                'DateTime': currentDate
             }
             setTrackerTransactions([...trackerTransactions, setTrackerTransactionItem])
             return
@@ -134,6 +135,26 @@ function DashboardTracker() {
            return
         }
         //send data
+        const trackerObj = {
+            "Name": trackerName,
+            "Transactions": trackerTransactions
+        }
+
+        let config = {
+            headers: { Authorization: `Bearer ${JWT}` }
+        }
+
+        console.log(trackerObj)
+        axios.post(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/Add/${user.id}`,trackerObj,config)
+            .then((response)=>{
+                if(response.status == 200){
+                    setQueryTrackerTrigger(!queryTrackerTrigger)
+                }
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+
         
     }
 
@@ -142,7 +163,7 @@ function DashboardTracker() {
                 <div className='w-screen sm:w-[500px] bg-FTwhite text-FTwhite border border-FTwhite z-10 h-screen sm:max-h-[625px] rounded-lg'>
                     <div className='w-full flex justify-end relative right-5 top-5 basis-full h-16'>
                         <figure onClick={()=>setCreateTracker(false)} className='m-0 w-8 h-8 hover:cursor-pointer'>
-                            <GrClose className='w-full h-full bg-FTgreen rounded-md relative'/>
+                            <GrClose className='w-full h-full bg-FTgreen rounded-md relative p-1'/>
                         </figure>
                     </div>
                     <div className='mx-auto w-[300px] sm:w-[400px] px-5 rounded-md h-400px border bg-FTgray border-FTwhite pb-10 mt-10 sm:mt-0'>
@@ -151,7 +172,7 @@ function DashboardTracker() {
                             titleError &&
                             <h1 className='text-red-600'>{titleError}</h1>
                         }
-                        <input type='text' className='border-b border-FTgreen bg-FTwhite ml-2 focus:border-FTgreen text-FTblack' placeholder='Tracker Name' onChange={(e)=>setTrackerName(e.target.value)}></input>
+                        <input type='text' className='border-b border-FTgreen bg-FTwhite focus:border-FTgreen text-FTblack' placeholder='Tracker Name' onChange={(e)=>setTrackerName(e.target.value)}></input>
                         <div className='h-[200px] overflow-y-scroll my-5 bg-FTwhite text-FTgray'>
                             {
                                 trackerTransactions.length > 0 ?
@@ -160,8 +181,8 @@ function DashboardTracker() {
                                             trackerTransactions.map(item =>{
                                                 return(
                                                     <div className='flex justify-evenly py-2 hover:bg-FTgreen hover:text-FTwhite even:bg-FTgray even:text-FTwhite'>
-                                                        <h1>{item.Date}</h1>
-                                                        <h1>{item.Cost}</h1>
+                                                        <h1>{item.DateTime}</h1>
+                                                        <h1>{item.Amount}</h1>
                                                     </div>
                                                 )
                                             })
