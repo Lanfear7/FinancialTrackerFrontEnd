@@ -51,15 +51,15 @@ function NavBar() {
                     {
                       JWT ?
                       <>
-                        <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen  text-2xl hover:bg-FTgray'>Dashboard</li></Link>
-                        <div className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>LogOut()}>
+                        <Link className='basis-full border-b border-FTgray flex items-center justify-center hover:cursor-pointer' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen  text-2xl hover:bg-FTgray'>Dashboard</li></Link>
+                        <div className='basis-full border-b border-FTgray flex items-center justify-center hover:cursor-pointer' onClick={()=>LogOut()}>
                           <li className='text-FTgreen text-2xl hover:bg-FTgray' >Logout</li>
                         </div>
                       </>
                       :
                       <>
-                        <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl hover:bg-FTgray'>LogIn</li></Link>
-                        <Link className='basis-full border-b border-FTgray flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/SignUp'><li className='text-FTgreen text-2xl hover:bg-FTgray'>SignUp</li></Link>
+                        <Link className='basis-full border-b border-FTgray flex items-center justify-center hover:cursor-pointer' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl hover:bg-FTgray'>LogIn</li></Link>
+                        <Link className='basis-full border-b border-FTgray flex items-center justify-center hover:cursor-pointer' onClick={()=>{setSideNav(false)}} to='/Authentication/SignUp'><li className='text-FTgreen text-2xl hover:bg-FTgray'>SignUp</li></Link>
                       </>
                     }
                      </ul>
@@ -73,15 +73,15 @@ function NavBar() {
             {
               JWT ?
               <>
-                <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen text-2xl '>Dashboard</li></Link>
+                <Link className='basis-full flex items-center justify-center hover:cursor-pointer' onClick={()=>{setSideNav(false)}} to='/Dashboard'><li className='text-FTgreen text-2xl '>Dashboard</li></Link>
                <div className='basis-full flex items-center justify-center'>
-                <li className='text-FTgreen text-2xl' onClick={()=>LogOut()}>Logout</li>
+                <li className='text-FTgreen text-2xl hover:cursor-pointer' onClick={()=>LogOut()}>Logout</li>
                 </div>
               </>
               :
               <>
-                <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl '>LogIn</li></Link>
-                <Link className='basis-full flex items-center justify-center' onClick={()=>{setSideNav(false)}} to='/Authentication/SignUp'><li className='text-FTgreen text-2xl '>SignUp</li></Link>
+                <Link className='basis-full flex items-center justify-center hover:cursor-pointer' onClick={()=>{setSideNav(false)}} to='/Authentication/LogIn'><li className='text-FTgreen text-2xl '>LogIn</li></Link>
+                <Link className='basis-full flex items-center justify-center hover:cursor-pointer' onClick={()=>{setSideNav(false)}} to='/Authentication/SignUp'><li className='text-FTgreen text-2xl '>SignUp</li></Link>
               </>
             }
           </ul>

@@ -9,8 +9,6 @@ function DashboardTracker() {
     const [queryTrackerTrigger, setQueryTrackerTrigger] = useState(false)
     const [userTrackers, setUserTrackers] = useState([])
 
-    const [getTrackerError, setGetTrackerError] = useState()
-
     const {user} = useSelector((state)=> state.User)
     const {JWT} = useSelector((state)=>state.User)
 
@@ -37,11 +35,11 @@ function DashboardTracker() {
             }).catch((error) => {
                 console.log(error)
                 if(error.response.data){
-                    setGetTrackerError("No Trackers Found")
+                    console.log(error.response.data)
                 }
             })
         }
-    },[user, queryTrackerTrigger])
+    },[user,queryTrackerTrigger])
 
   return (
     <div className='pb-5'>
@@ -55,32 +53,40 @@ function DashboardTracker() {
                     userTrackers.map((tracker, i) => {
                         if(tracker.tracker){
                             return(
-                                <div className='w-[300px] bg-FTgray rounded-lg p-2 max-h-96 m-5'>
-                                    <h1 className='text-FTwhite text-2xl table-auto text-center py-3 border-b border-FTgreen'>{tracker.tracker.name}</h1>
-                                    <table className='w-full table-auto text-FTwhite my-4'>
-                                        <thead>
-                                            <tr>
-                                                <td className='pl-3 border-b border-FTblack text-lg'>Date</td>
-                                                <td className='pl-3 border-b border-FTblack text-lg'>Cost</td> 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                tracker.tracker.transactions?
-                                                tracker.tracker.transactions.$values.map((transaction, i)=>{
-                                                    return(
-                                                        <tr>
-                                                            <td>{transaction.dateTime.slice(0, -12)}</td>
-                                                            <td>${transaction.amount}</td>
-                                                        </tr>
-                                                    )
-                                                })
-                                                :
-                                                <></>
-                                            }
-                                            
-                                        </tbody>
-                                    </table>
+                                <div className='w-[300px] bg-FTgray rounded-lg p-2 h-96 m-5'>
+                                    <div className='relative h-0 w-0'>
+                                        <figure className='absolute h-8 w-8 left-[250px] m-0' onClick={()=>DeleteTracker(tracker.tracker.id)}>
+                                            <GrClose className='w-full h-full bg-FTgreen hover:bg-[#41a886] hover:cursor-pointer rounded-md relative p-1'/>
+                                        </figure>
+                                    </div>
+                                    <h1 className='text-FTwhite text-2xl table-auto text-center py-3 pt-8 border-b border-FTgreen'>{tracker.tracker.name}</h1>
+                                    <div className='h-[200px] overflow-y-scroll'>
+                                        <table className='w-full table-auto text-FTwhite my-4 '>
+                                            <thead>
+                                                <tr>
+                                                    <td className='pl-3 border-b border-FTblack text-lg'>Date</td>
+                                                    <td className='pl-3 border-b border-FTblack text-lg'>Cost</td> 
+                                                </tr>
+                                            </thead>
+                                            <tbody className=' overflow-y-scroll'>
+                                                {
+                                                    tracker.tracker.transactions?
+                                                    tracker.tracker.transactions.$values.map((transaction, i)=>{
+                                                        return(
+                                                            <tr>
+                                                                <td className='pl-3 h-5 text-lg'>{transaction.dateTime.slice(0, -12)}</td>
+                                                                <td className='pl-3 h-5 text-lg'>${transaction.amount}</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                    :
+                                                    <></>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
                                     <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
                                         <input type='text' placeholder='Cost' className='h-7'></input>
                                         <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%] hover:text-FTwhite'>Enter</button>
@@ -210,6 +216,20 @@ function DashboardTracker() {
     )
   }
 
+  function DeleteTracker(Id){
+    console.log('pop to confirm deletion', Id)
+    const configuration = {
+        headers: { Authorization: `Bearer ${JWT}` }
+    }
+    axios.delete(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/Delete/${Id}`,
+    configuration)
+    .then(res=>{
+        console.log(res)
+        setQueryTrackerTrigger(!queryTrackerTrigger)
+    }).catch(error =>{
+        console.log(error)
+    })
+  }
 
 }
 

@@ -75,7 +75,7 @@ function SignInUp() {
                             <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Confirm Password' type='password' onChange={(e)=>setConfirmPassword(e.target.value)}></input>
                         </div>
                         <div className='basis-full text-center' >
-                            <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack' type='button' value='SignUp' onClick={()=>SignUp()}></input>
+                            <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack hover:cursor-pointer' type='button' value='SignUp' onClick={()=>SignUp()}></input>
                         </div>  
                     </form>
                     {
@@ -127,7 +127,7 @@ function SignInUp() {
                             <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Password' type='password' onChange={(e)=>setPassword(e.target.value)}></input>
                         </div>
                         <div className='basis-full h-14 text-center' >
-                            <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack' type='button' value='LogIn' onClick={()=>LogIn()}></input>
+                            <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack hover:cursor-pointer' type='button' value='LogIn' onClick={()=>LogIn()}></input>
                         </div> 
                     </form>
                     {
