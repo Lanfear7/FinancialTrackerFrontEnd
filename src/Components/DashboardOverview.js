@@ -50,12 +50,7 @@ function DashboardOverview() {
   
     const data = [
       ["Expense", "Expenses Per Month"],
-      ["Transportation", 1200],
-      ["Food", 500],
-      ["Entertainment", 150],
-      ["Bills", 900],
-      ["other", 300],
-      ["Savings", 250]
+      ["Transportation", 0.1],
     ];
 
   return (

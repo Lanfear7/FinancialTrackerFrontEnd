@@ -9,15 +9,17 @@ function DashboardTracker() {
     const [queryTrackerTrigger, setQueryTrackerTrigger] = useState(false)
     const [userTrackers, setUserTrackers] = useState([])
 
+
     const {user} = useSelector((state)=> state.User)
     const {JWT} = useSelector((state)=>state.User)
 
+    const configuration = {
+        headers: { Authorization: `Bearer ${JWT}` }
+    }
 
     useEffect(()=>{
         if(user.id){
-            const configuration = {
-                headers: { Authorization: `Bearer ${JWT}` }
-            }
+            
 
             axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/${user.id}`,
             configuration
@@ -31,15 +33,50 @@ function DashboardTracker() {
                         }
                     });
                     setUserTrackers(trackerTransactionsArray)
+                    
                 }
             }).catch((error) => {
                 console.log(error)
                 if(error.response.data){
                     console.log(error.response.data)
+                    setUserTrackers([])
                 }
             })
         }
     },[user,queryTrackerTrigger])
+
+    function addTransaction(e,Id){
+        const amount = e.target.previousSibling.value
+        if(isNaN(amount)){
+            return false
+        }
+
+        let MyDate = new Date();
+
+        let MyDateString = MyDate.getFullYear()  + '-'
+             + ('0' + (MyDate.getMonth()+1)).slice(-2) + '-'
+             + ('0' + MyDate.getDate()).slice(-2) + 'T00:00:00';
+
+        console.log(MyDateString)
+        let DTO = {
+            "TrackerId" : Id,
+            "Amount" : amount,
+            "DateTime" : MyDateString
+        }
+
+        
+        axios.post('https://localhost:44320/api/Dashboard/CurrentUser/Transactions/Add',
+        DTO,
+        configuration
+        ).then(res=>{
+            if(res.status == 200){
+                setQueryTrackerTrigger(!queryTrackerTrigger)
+            }
+        }).catch(error=>{
+            console.log(error)
+        })
+
+    }
 
   return (
     <div className='pb-5'>
@@ -51,9 +88,12 @@ function DashboardTracker() {
             {
                 userTrackers.length > 0 ?
                     userTrackers.map((tracker, i) => {
+                        let total = 0
+                        let error = false
+                        console.log(tracker)
                         if(tracker.tracker){
                             return(
-                                <div className='w-[300px] bg-FTgray rounded-lg p-2 h-96 m-5'>
+                                <div className='w-[300px] bg-FTgray rounded-lg p-2 h-[400px] m-5'>
                                     <div className='relative h-0 w-0'>
                                         <figure className='absolute h-8 w-8 left-[250px] m-0' onClick={()=>DeleteTracker(tracker.tracker.id)}>
                                             <GrClose className='w-full h-full bg-FTgreen hover:bg-[#41a886] hover:cursor-pointer rounded-md relative p-1'/>
@@ -72,6 +112,7 @@ function DashboardTracker() {
                                                 {
                                                     tracker.tracker.transactions?
                                                     tracker.tracker.transactions.$values.map((transaction, i)=>{
+                                                        total = total + transaction.amount
                                                         return(
                                                             <tr>
                                                                 <td className='pl-3 h-5 text-lg'>{transaction.dateTime.slice(0, -12)}</td>
@@ -86,11 +127,12 @@ function DashboardTracker() {
                                             </tbody>
                                         </table>
                                     </div>
-                                    
+                                    <div>
+                                        <h1 className='text-FTwhite text-xl mb-3'>Total - ${total.toFixed(2)}</h1>
+                                    </div>
                                     <div className='w-full h-[75px] flex flex-wrap justify-around items-center py-3 border-t border-FTgreen'>
                                         <input type='text' placeholder='Cost' className='h-7'></input>
-                                        <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%] hover:text-FTwhite'>Enter</button>
-                                        <h1 className='text-red-600 text-xl'>error</h1>
+                                        <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%] hover:text-FTwhite' onClick={(e)=>{addTransaction(e,tracker.tracker.id)}}>Enter</button>
                                     </div>
                                 </div>
                             )
@@ -150,7 +192,6 @@ function DashboardTracker() {
             headers: { Authorization: `Bearer ${JWT}` }
         }
 
-        console.log(trackerObj)
         axios.post(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/Add/${user.id}`,trackerObj,config)
             .then((response)=>{
                 if(response.status == 200){
@@ -226,6 +267,10 @@ function DashboardTracker() {
     .then(res=>{
         console.log(res)
         setQueryTrackerTrigger(!queryTrackerTrigger)
+        if(res.status == 200){
+            console.log('remove', Id)
+            
+        }
     }).catch(error =>{
         console.log(error)
     })
