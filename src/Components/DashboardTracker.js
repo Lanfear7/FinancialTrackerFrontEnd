@@ -19,8 +19,6 @@ function DashboardTracker() {
 
     useEffect(()=>{
         if(user.id){
-            
-
             axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Trackers/${user.id}`,
             configuration
             ).then((res) => {
@@ -80,7 +78,7 @@ function DashboardTracker() {
 
   return (
     <div className='pb-5'>
-        <h1 className='text-4xl text-FTwhite lg:pl-16 mt-6'>Trackers</h1>
+        <h1 className='text-4xl text-FTwhite pl-2 lg:pl-16 mt-6'>Trackers</h1>
         <div className='text-FTwhite m-5 lg:pl-24'>
             <button onClick={(e)=>{e.preventDefault(); setCreateTracker(true)}} className='text-xl bg-FTgreen text-FTblack px-3 py-2 rounded-md w-[200px] hover:text-FTwhite hover:cursor-pointer shadow-xl'>Create New Tracker</button>
         </div>
@@ -114,7 +112,7 @@ function DashboardTracker() {
                                                     tracker.tracker.transactions.$values.map((transaction, i)=>{
                                                         total = total + transaction.amount
                                                         return(
-                                                            <tr>
+                                                            <tr className='hover:bg-FTgreen hover:text-FTblack'>
                                                                 <td className='pl-3 h-5 text-lg'>{transaction.dateTime.slice(0, -12)}</td>
                                                                 <td className='pl-3 h-5 text-lg'>${transaction.amount}</td>
                                                             </tr>

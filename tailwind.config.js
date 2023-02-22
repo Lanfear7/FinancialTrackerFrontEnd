@@ -10,6 +10,15 @@ module.exports = {
         FTwhite : "#EAEAEA"
       }
     },
+    screens: {
+      'sm': '576px',
+
+      'md': '960px',
+
+      'lg': '1440px',
+
+      'xl': '1600px'
+    },
   },
   plugins: [
     require('tailwind-scrollbar')({ nocompatible: true }),

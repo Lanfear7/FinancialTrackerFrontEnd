@@ -51,7 +51,7 @@ function Dashboard() {
 
 
   return (
-    <div className='bg-FTblack min-h-screen'>
+    <div className='bg-FTblack min-h-screen overflow-x-hidden'>
         <NavBar />
         <DashboardOverview />
         <DashboardTracker />
