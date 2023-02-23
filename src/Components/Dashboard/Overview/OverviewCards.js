@@ -78,11 +78,11 @@ function OverviewCards() {
                 </div>
             }
           </div>
-          <div className='text-FTwhite border-2 border-FTgreen bg-FTgray rounded-lg h-[150px] p-2 shadow-lg w-[300px] flex flex-wrap items-center my-2'>
+          <div className='text-FTwhite border-2 border-FTgreen bg-FTgray rounded-lg h-[160px] p-2 shadow-lg w-[300px] flex flex-wrap items-center my-2'>
             <h1 className='basis-full text-2xl'>Expense</h1>
             <div className='flex flex-wrap justify-evenly w-full'>
-              <input type='text' className='bg-FTgray border-b border-FTgreen basis-[80%]' placeholder='Enter Expense'></input>
-              <input type='text' className='bg-FTgray border-b border-FTgreen basis-[80%]' placeholder='Enter Cost'></input>
+              <input type='text' className='bg-FTgray border-b border-FTgreen basis-[80%] mt-2' placeholder='Enter Expense'></input>
+              <input type='text' className='bg-FTgray border-b border-FTgreen basis-[80%] mt-2' placeholder='Enter Cost'></input>
               <button className='bg-FTgreen text-FTblack px-3 rounded-md basis-[25%] mt-3'>Enter</button>
             </div>
           </div>

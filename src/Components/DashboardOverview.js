@@ -11,7 +11,7 @@ function DashboardOverview() {
   return (
     <div className='h-full border-b border-FTgreen pb-32 md:pb-16'>
       <OverviewCards />
-      <div className='flex flex-wrap mt-10 pl-2'>
+      <div className='flex flex-wrap mt-10 justify-between'>
         <ExpenseBreakdown />
         <ExpenseChart />
       </div>

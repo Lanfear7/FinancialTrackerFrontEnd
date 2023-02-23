@@ -112,7 +112,7 @@ function DashboardTracker() {
                                                     tracker.tracker.transactions.$values.map((transaction, i)=>{
                                                         total = total + transaction.amount
                                                         return(
-                                                            <tr className='hover:bg-FTgreen hover:text-FTblack'>
+                                                            <tr className='hover:bg-FTgreen hover:text-FTblack hover:cursor-pointer'>
                                                                 <td className='pl-3 h-5 text-lg'>{transaction.dateTime.slice(0, -12)}</td>
                                                                 <td className='pl-3 h-5 text-lg'>${transaction.amount}</td>
                                                             </tr>
