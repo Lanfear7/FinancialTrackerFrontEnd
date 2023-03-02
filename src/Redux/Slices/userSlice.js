@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { PayloadAction } from '@reduxjs/toolkit'
+
 const initialState = {
   user : '',
-  JWT : ''
+  JWT : '',
+  trackers : [],
 }
 
 export const userSlice = createSlice({
@@ -18,11 +19,11 @@ export const userSlice = createSlice({
     },
     currentUserData: (state, {payload}) => {
       state.user = payload
-    }
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addUser, removeUser, currentUserData } = userSlice.actions
+export const { addUser, removeUser, currentUserData, addUserTracker } = userSlice.actions
 
 export default userSlice.reducer
