@@ -19,12 +19,14 @@ function ExpenseBreakdown() {
               <th className='w-[100px] py-2'>Date</th>
               <th className='w-[100px] py-2'>Expense</th>
               <th className='w-[100px] py-2'>Cost</th>
+              <th className='w-[30px] py-2'>Delete</th>
             </thead>
             <tbody>
               <tr className='hover:bg-FTgreen hover:text-FTblack hover:cursor-pointer'>
                 <td className='text-center'>2021-06-13</td>
                 <td className='text-center'>Welder</td>
                 <td className='text-center'>$1500</td>
+                <td className='text-center'>X</td>
               </tr>
             </tbody>
           </table>
