@@ -2,13 +2,16 @@ import axios from 'axios'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeExpenseToggle } from '../../../Redux/Slices/expensesSlice'
 
 function ExpenseBreakdown() {
 
-  const [expenses, setExpenses] = useState([2])
+  const [expenses, setExpenses] = useState([])
 
   const {user, JWT} = useSelector((state) => state.User)
+  const { expensesToggle } = useSelector((state) =>state.Expenses)
+  const dispatch = useDispatch()
 
   //query api for Expenses GET all expenses
   const config = {
@@ -30,7 +33,7 @@ function ExpenseBreakdown() {
     .catch((error)=>{
       console.log(error)
     })
-  },[user])
+  },[user,expensesToggle])
 
   return (
     <div className='basis-full mx-2 h-[345px] md:basis-5/12 lg:basis-[600px]'>
@@ -40,28 +43,29 @@ function ExpenseBreakdown() {
         {
           expenses.length > 0 ?
           <table className='w-full table-auto text-FTwhite'>
-          <thead className='border-b border-FTblack'>
-            <th className='w-[100px] py-2'>Date</th>
-            <th className='w-[100px] py-2'>Expense</th>
-            <th className='w-[100px] py-2'>Cost</th>
-            <th className='w-[30px] py-2'>Delete</th>
-          </thead>
-          {
-
-            expenses.map((item, i) => {
-              console.log(item)
-              return(
-                <tbody>
-                  <tr className='hover:bg-FTgreen hover:text-FTblack hover:cursor-pointer'>
-                    <td className='text-center'>{item.dateTime.slice(0,10)}</td>
+            <thead className='border-b border-FTblack'>
+              <th className='w-[100px] py-2'>Date</th>
+              <th className='w-[100px] py-2'>Expense</th>
+              <th className='w-[100px] py-2'>Cost</th>
+              <th className='w-[30px] py-2'>Delete</th>
+            </thead>
+            <tbody>
+            {
+              expenses.map((item, i) => {
+                return(
+                  <tr key={i} className='hover:bg-FTgreen hover:text-FTblack hover:cursor-pointer'>
+                    {
+                      item.dateTime &&
+                      <td className='text-center'>{item.dateTime.slice(0,10)}</td>
+                    }
                     <td className='text-center'>{item.expenseName}</td>
-                    <td className='text-center'>{item.value}</td>
-                    <td className='text-center' onClick={()=>deleteExpense()}>X</td>
+                    <td className='text-center'>${item.value}</td>
+                    <td className='text-center' onClick={()=>deleteExpense(item.id)}>X</td>
                   </tr>
-                </tbody>
-              )
-            })
-          }
+                )
+              })
+            }
+            </tbody>
           </table>
           :
           <div className='h-full w-full flex justify-center items-center'>
@@ -73,10 +77,22 @@ function ExpenseBreakdown() {
       
     </div>
   )
+  function deleteExpense(id){
+    console.log('delete', id)
+    axios.delete(`https://localhost:44320/api/Dashboard/CurrentUser/Expenses/Delete/${id}`,config)
+    .then((res)=>{
+      if(res.status == 200){
+        //edit GS fro Expenses
+        console.log(res)
+        dispatch(changeExpenseToggle(!expensesToggle))
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
 }
 
-function deleteExpense(){
-  console.log('delete')
-}
+
 
 export default ExpenseBreakdown
