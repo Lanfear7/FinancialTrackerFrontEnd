@@ -1,13 +1,13 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react'
 import { currentUserData } from '../../../Redux/Slices/userSlice';
+import { changeExpenseToggle, addExpenseState } from '../../../Redux/Slices/expensesSlice'
 import { useDispatch, useSelector } from 'react-redux';
 
 function OverviewCards() {
 
     const [monthlyIncome, setMonthlyIncome] = useState(0);
     const [monthlyIncomeToggle, setMonthlyIncomeToggle] = useState(false)
-    const [addNewExpense, setAddNewExpense] = useState(false)
     const [expenseName, setExpenseName] = useState()
     const [expenseCost, setExpenseCost] = useState()
   
@@ -16,7 +16,8 @@ function OverviewCards() {
 
   
     const {JWT} = useSelector((state) => state.User)
-    const {user} = useSelector((state) =>state.User)
+    const {user} = useSelector((state) => state.User)
+    const {expensesToggle} = useSelector((state) => state.Expenses)
 
     const dispatch = useDispatch()
 
@@ -128,6 +129,8 @@ function OverviewCards() {
     .then((res)=>{
       console.log(res)
       if(res.status == 200){
+        dispatch(addExpenseState({expenseName,expenseCost}))
+        dispatch(changeExpenseToggle(!expensesToggle))
         setExpenseName('')
         setExpenseCost('')
       }

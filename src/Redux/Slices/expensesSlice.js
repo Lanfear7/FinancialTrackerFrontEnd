@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    expensesToggle : false
+    expensesToggle : false,
+    expenses: []
 }
 
 export const expensesSlice = createSlice({
@@ -9,12 +10,14 @@ export const expensesSlice = createSlice({
     initialState,
     reducers: {
         changeExpenseToggle: (state, {payload}) =>{
-            console.log(payload)
             state.expensesToggle = payload
+        },
+        addExpenseState: (state, {payload}) =>{
+            state.expenses = payload
         }
     }
 })
 
-export const { changeExpenseToggle } = expensesSlice.actions
+export const { changeExpenseToggle, addExpenseState } = expensesSlice.actions
 
 export default expensesSlice.reducer

@@ -3,14 +3,12 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeExpenseToggle } from '../../../Redux/Slices/expensesSlice'
+import { changeExpenseToggle, addExpenseState } from '../../../Redux/Slices/expensesSlice'
 
 function ExpenseBreakdown() {
 
-  const [expenses, setExpenses] = useState([])
-
   const {user, JWT} = useSelector((state) => state.User)
-  const { expensesToggle } = useSelector((state) =>state.Expenses)
+  const { expensesToggle, expenses} = useSelector((state) =>state.Expenses)
   const dispatch = useDispatch()
 
   //query api for Expenses GET all expenses
@@ -28,10 +26,13 @@ function ExpenseBreakdown() {
     axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Expenses/GetAll/${user.id}`,config)
     .then((res)=>{
       let expenseArray = res.data['$values']
-      setExpenses(expenseArray)
+      dispatch(addExpenseState(expenseArray))
     })
     .catch((error)=>{
       console.log(error)
+      if(error.response.data == "No expenses found"){
+        dispatch(addExpenseState([]))
+      }
     })
   },[user,expensesToggle])
 
@@ -78,12 +79,9 @@ function ExpenseBreakdown() {
     </div>
   )
   function deleteExpense(id){
-    console.log('delete', id)
     axios.delete(`https://localhost:44320/api/Dashboard/CurrentUser/Expenses/Delete/${id}`,config)
     .then((res)=>{
       if(res.status == 200){
-        //edit GS fro Expenses
-        console.log(res)
         dispatch(changeExpenseToggle(!expensesToggle))
       }
     })
