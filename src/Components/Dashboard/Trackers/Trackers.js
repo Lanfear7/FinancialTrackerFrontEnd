@@ -63,7 +63,7 @@ function DashboardTracker() {
                                             <GrClose className='w-full h-full bg-FTgreen hover:bg-[#41a886] hover:cursor-pointer rounded-md relative p-1'/>
                                         </figure>
                                     </div>
-                                    <h1 className='text-FTwhite text-2xl table-auto text-center py-3 pt-8 border-b border-FTgreen'>{tracker.tracker.name}</h1>
+                                    <h1 className='text-FTwhite text-2xl table-auto text-center py-3 pt-8 border-b border-FTgreen'>{tracker.tracker.name.charAt(0).toUpperCase()+ tracker.tracker.name.slice(1)}</h1>
                                     <div className='h-[200px] overflow-y-scroll'>
                                         <table className='w-full table-auto text-FTwhite my-4 '>
                                             <thead>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react'
-import { currentUserData } from '../../../Redux/Slices/userSlice';
+import { currentUserData, updateMonthlyIncome } from '../../../Redux/Slices/userSlice';
 import { changeExpenseToggle, addExpenseState } from '../../../Redux/Slices/expensesSlice'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,16 +11,11 @@ function OverviewCards() {
     const [expenseName, setExpenseName] = useState()
     const [expenseCost, setExpenseCost] = useState()
   
-
-    const [monthlySavings, setMonthlySavings] = useState(0.00);
-
-  
-    const {JWT} = useSelector((state) => state.User)
-    const {user} = useSelector((state) => state.User)
-    const {expensesToggle} = useSelector((state) => state.Expenses)
+    const {JWT,user,monthlySavings} = useSelector((state) => state.User)
+    const {expensesToggle, expenses} = useSelector((state) => state.Expenses)
+    const {trackers} = useSelector((state) => state.Tracker)
 
     const dispatch = useDispatch()
-
 
     const config = {
       headers: { 
@@ -30,28 +25,31 @@ function OverviewCards() {
       }
     };
     useEffect(()=>{
-      axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/${user.id}`,
-      config
-      ).then((res)=>{
-        if(res.data['$values']){
-          const user = res.data['$values']
-          dispatch(currentUserData(user[0]))
-          return
-        }
-        console.log('something went wrong no data')
-      }).catch((error)=>{
-        console.log(error)
-      })
+      if(user.id != undefined){
+        axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/${user.id}`,
+        config
+        ).then((res)=>{
+          if(res.data['$values']){
+            const user = res.data['$values']
+            dispatch(updateMonthlyIncome(user[0].monthlyIncome))
+            dispatch(currentUserData(user[0]))
+            return
+          }
+          console.log('something went wrong no data')
+        }).catch((error)=>{
+          console.log(error)
+        })
+      }
     },[monthlyIncomeToggle])
 
 
   return (
     <div className='h-full flex flex-wrap justify-evenly items-center w-full sm:w-[500px] md:w-full xl:w-3/4 basis-full mt-5 xl:ml-5'>
-        <div className='text-FTwhite border-2 border-FTgreen bg-FTgray rounded-lg h-[150px] p-2 shadow-lg w-[300px] flex flex-wrap items-center my-2'>
+        <div className='text-FTwhite border-2 border-FTgreen bg-FTgray rounded-lg h-[160px] p-2 shadow-lg w-[300px] flex flex-wrap items-center my-2'>
           <h1 className='basis-full text-2xl'>Monthly Savings</h1>
           <h1 className='pl-5 text-2xl'>${monthlySavings.toFixed(2)}</h1>
-          </div>
-          <div className='text-FTwhite border-2 border-FTgreen bg-FTgray rounded-lg h-[150px] p-2 shadow-lg w-[300px] flex flex-wrap items-center my-2'>
+        </div>
+          <div className='text-FTwhite border-2 border-FTgreen bg-FTgray rounded-lg h-[160px] p-2 shadow-lg w-[300px] flex flex-wrap items-center my-2'>
             <h1 className='basis-full text-2xl'>Monthly Income</h1>
             {
               user.monthlyIncome ?
@@ -102,8 +100,8 @@ function OverviewCards() {
     config
     )
     .then(function (response) {
-      console.log(response);
       setMonthlyIncomeToggle(false)
+      dispatch(updateMonthlyIncome(monthlyIncome))
     })
     .catch(function (error) {
       console.log(error);

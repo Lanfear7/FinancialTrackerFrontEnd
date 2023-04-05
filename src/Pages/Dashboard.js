@@ -6,7 +6,7 @@ import DashboardOverview from '../Components/DashboardOverview';
 import DashboardTracker from '../Components/DashboardTracker';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { currentUserData } from '../Redux/Slices/userSlice';
+import { currentUserData, updateMonthlyIncome } from '../Redux/Slices/userSlice';
 import { useEffect } from 'react';
 
 
@@ -38,6 +38,7 @@ function Dashboard() {
     ).then((res)=>{
       if(res.data['$values']){
         const user = res.data['$values']
+        dispatch(updateMonthlyIncome(user[0].monthlyIncome))
         dispatch(currentUserData(user[0]))
         return
       }

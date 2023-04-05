@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   user : '',
   JWT : '',
-  trackers : [],
+  monthlySavings : 0,
+  monthlyIncome : 0
 }
 
 export const userSlice = createSlice({
@@ -20,10 +21,22 @@ export const userSlice = createSlice({
     currentUserData: (state, {payload}) => {
       state.user = payload
     },
+    updateMonthlySavings : (state, {payload}) => {
+      state.monthlySavings = payload
+    },
+    updateMonthlyIncome : (state, {payload}) =>{
+      state.monthlyIncome = payload
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addUser, removeUser, currentUserData, addUserTracker } = userSlice.actions
+export const { 
+  addUser,
+  removeUser, 
+  currentUserData, 
+  updateMonthlySavings,
+  updateMonthlyIncome
+  } = userSlice.actions
 
 export default userSlice.reducer

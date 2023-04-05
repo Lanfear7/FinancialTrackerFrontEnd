@@ -1,17 +1,16 @@
 import axios from 'axios'
 import React from 'react'
 import { useEffect } from 'react'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeExpenseToggle, addExpenseState } from '../../../Redux/Slices/expensesSlice'
+import { subtractMonthlySavings } from '../../../Redux/Slices/userSlice'
 
 function ExpenseBreakdown() {
 
-  const {user, JWT} = useSelector((state) => state.User)
-  const { expensesToggle, expenses} = useSelector((state) =>state.Expenses)
+  const { user, JWT } = useSelector((state) => state.User)
+  const { expensesToggle, expenses } = useSelector((state) =>state.Expenses)
   const dispatch = useDispatch()
 
-  //query api for Expenses GET all expenses
   const config = {
     headers: { 
       'Accept': 'application/json',
@@ -19,23 +18,15 @@ function ExpenseBreakdown() {
       'Authorization': `Bearer ${JWT}`, 
     }
   };
+  
   useEffect(()=>{
     if(!user){
       return
     }
-    axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Expenses/GetAll/${user.id}`,config)
-    .then((res)=>{
-      let expenseArray = res.data['$values']
-      dispatch(addExpenseState(expenseArray))
-    })
-    .catch((error)=>{
-      console.log(error)
-      if(error.response.data == "No expenses found"){
-        dispatch(addExpenseState([]))
-      }
-    })
+    getAllExpensesData()
+    
   },[user,expensesToggle])
-
+      
   return (
     <div className='basis-full mx-2 h-[345px] md:basis-5/12 lg:basis-[600px]'>
       <div className='border border-FTgreen rounded-lg px-5 py-5 md:px-6 md:m-0'>
@@ -78,6 +69,7 @@ function ExpenseBreakdown() {
       
     </div>
   )
+
   function deleteExpense(id){
     axios.delete(`https://localhost:44320/api/Dashboard/CurrentUser/Expenses/Delete/${id}`,config)
     .then((res)=>{
@@ -87,6 +79,20 @@ function ExpenseBreakdown() {
     })
     .catch((error) => {
       console.log(error)
+    })
+  }
+
+  function getAllExpensesData(){
+    axios.get(`https://localhost:44320/api/Dashboard/CurrentUser/Expenses/GetAll/${user.id}`,config)
+    .then((res)=>{
+      let expenseArray = res.data['$values']
+      dispatch(addExpenseState(expenseArray))
+    })
+    .catch((error)=>{
+      console.log(error)
+      if(error.response.data == "No expenses found"){
+        dispatch(addExpenseState([]))
+      }
     })
   }
 }
