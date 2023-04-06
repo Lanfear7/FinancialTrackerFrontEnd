@@ -57,7 +57,7 @@ function DashboardTracker() {
                         let error = false
                         if(tracker.tracker){
                             return(
-                                <div className='w-[300px] bg-FTgray rounded-lg p-2 h-[400px] m-5'>
+                                <div className='w-[300px] bg-FTgray rounded-lg p-2 h-[400px] m-3 shadow-lg'>
                                     <div className='relative h-0 w-0'>
                                         <figure className='absolute h-8 w-8 left-[250px] m-0' onClick={()=>DeleteTracker(tracker.tracker.id)}>
                                             <GrClose className='w-full h-full bg-FTgreen hover:bg-[#41a886] hover:cursor-pointer rounded-md relative p-1'/>

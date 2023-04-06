@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { currentUserData, updateMonthlyIncome } from '../Redux/Slices/userSlice';
 import { useEffect } from 'react';
+import NetWorthCalculator from '../Components/Dashboard/NetWorthCalculator';
 
 
 function Dashboard() {
@@ -56,6 +57,7 @@ function Dashboard() {
         <NavBar />
         <DashboardOverview />
         <DashboardTracker />
+        <NetWorthCalculator />
     </div>
   )
 }

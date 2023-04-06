@@ -35,7 +35,6 @@ function ExpenseChart() {
   let trackerTotal = 0
   trackers.forEach(tracker => {
     let trackerAmount = 0
-    console.log(tracker.tracker.transactions)
     if(tracker.tracker.transactions != null){
       tracker.tracker.transactions['$values'].forEach(value =>{
         trackerAmount += value.amount
