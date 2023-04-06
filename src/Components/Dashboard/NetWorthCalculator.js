@@ -4,6 +4,8 @@ function NetWorthCalculator() {
 
     const [assets, setAssets] = useState(0)
     const [liabilities, setLiabilities] = useState(0)
+    const [netWorth, setNetWorth] = useState()
+    const [error, setError] = useState()
     
 
   return (
@@ -26,7 +28,7 @@ function NetWorthCalculator() {
             </div>
             
             <div className='md:basis-1/2 mt-10 md:mt-0 md:pl-7 flex justify-center md:relative '>
-                <div className='w-[90%] max-w-[500px] h-[375px] bg-FTgray rounded-lg pt-7 shadow-lg  '>
+                <div className='w-[90%] max-w-[500px] h-[375px] bg-FTgray rounded-lg pt-7 md:pt-16 shadow-lg  '>
                     <div className='w-[300px] h-[150px] flex flex-wrap justify-center md:h-[100px] md:justify-between md:px-3 md:w-full mx-auto'>
                         <div>
                             <h1>Assets</h1>
@@ -39,13 +41,16 @@ function NetWorthCalculator() {
                         </div>
                     </div>
                     <div className='flex justify-center'>
-                        <button className='mt-10 md:mt-5 w-32 h-10 bg-FTgreen rounded-lg' onClick={()=>calculateNetWorth()}>Calculate</button>
+                        <button className='mt-10 md:mt-5 w-32 h-10 bg-FTgreen rounded-lg text-black' onClick={()=>calculateNetWorth()}>Calculate</button>
                     </div>
                     <div className='h-[50px] mt-12 text-center'>
                         {
-
+                            error && <h1>{error}</h1>
                         }
-                      <h1>Your net worth is $10,000</h1>  
+                        {
+                            netWorth && <h1>Your net worth is ${netWorth}</h1>  
+                        }
+                      
                     </div>
                 </div>
             </div>
@@ -54,9 +59,14 @@ function NetWorthCalculator() {
   )
 
     function calculateNetWorth(){
-        //data check to see if assets and liabilities is a number
-        let netWorth = assets - liabilities
-        console.log(netWorth)
+        if(/^\d+$/.test(assets) && /^\d+$/.test(liabilities)){
+            let netWorth = assets - liabilities
+            setNetWorth(netWorth)
+            setError()
+            return
+        }
+        setNetWorth()
+        setError('Must enter a number into both fields.')
     }
 }
 

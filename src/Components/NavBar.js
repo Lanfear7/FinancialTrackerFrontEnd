@@ -45,7 +45,7 @@ function NavBar() {
             </div>
             {
               sideNav &&
-              <div className='absolute top-0 right-0 h-screen w-full bg-FTblack flex flex-wrap justify-end md:w-2/4 z-30'>
+              <div className='fixed top-0 right-0 h-screen w-full bg-FTblack flex flex-wrap justify-end md:w-2/4 z-30'>
                   <AiOutlineClose className=' mr-3 mt-3 w-6 h-6 bg-red-500 rounded z-20' onClick={()=>{setSideNav(false)}}/>
                   <ul className='absolute h-full w-full flex justify-evenly flex-wrap'>
                     {
