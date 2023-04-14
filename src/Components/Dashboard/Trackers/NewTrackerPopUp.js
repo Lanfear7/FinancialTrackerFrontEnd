@@ -42,9 +42,8 @@ function NewTrackerModel(){
            setTitleError('Please enter a tracker name') 
            return
         }
-        //send data
         const trackerObj = {
-            "Name": trackerName,
+            "Name": trackerName.charAt(0).toUpperCase() + trackerName.slice(1),
             "Transactions": trackerTransactions
         }
 
@@ -56,6 +55,8 @@ function NewTrackerModel(){
             .then((response)=>{
                 if(response.status == 200){
                     dispatch(queryTrackers(!trackerQuery))
+                    setTrackerName('')
+                    setTrackerTransactions([])
                 }
             })
             .catch((error)=>{
@@ -79,7 +80,7 @@ function NewTrackerModel(){
                             titleError &&
                             <h1 className='text-red-600'>{titleError}</h1>
                         }
-                        <input type='text' className='border-b border-FTgreen bg-FTwhite focus:border-FTgreen text-FTblack' placeholder='Tracker Name' onChange={(e)=>setTrackerName(e.target.value)}></input>
+                        <input type='text' className='border-b border-FTgreen bg-FTwhite focus:border-FTgreen text-FTblack' placeholder='Tracker Name' value={trackerName} onChange={(e)=>setTrackerName(e.target.value)}></input>
                         <div className='h-[200px] overflow-y-scroll my-5 bg-FTwhite text-FTgray'>
                             {
                                 trackerTransactions.length > 0 ?

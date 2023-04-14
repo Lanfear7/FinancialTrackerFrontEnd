@@ -57,7 +57,7 @@ function DashboardTracker() {
                         let error = false
                         if(tracker.tracker){
                             return(
-                                <div className='w-[300px] bg-FTgray rounded-lg p-2 h-[400px] m-3 shadow-lg'>
+                                <div className='w-[300px] bg-FTgray rounded-lg p-2 h-[400px] m-3 shadow-lg' id={tracker.tracker.id} key={i}>
                                     <div className='relative h-0 w-0'>
                                         <figure className='absolute h-8 w-8 left-[250px] m-0' onClick={()=>DeleteTracker(tracker.tracker.id)}>
                                             <GrClose className='w-full h-full bg-FTgreen hover:bg-[#41a886] hover:cursor-pointer rounded-md relative p-1'/>
@@ -78,7 +78,7 @@ function DashboardTracker() {
                                                     tracker.tracker.transactions.$values.map((transaction, i)=>{
                                                         total = total + transaction.amount
                                                         return(
-                                                            <tr className='hover:bg-FTgreen hover:text-FTblack hover:cursor-pointer'>
+                                                            <tr className='hover:bg-FTgreen hover:text-FTblack hover:cursor-pointer' key={i}>
                                                                 <td className='pl-3 h-5 text-lg'>{transaction.dateTime.slice(0, -12)}</td>
                                                                 <td className='pl-3 h-5 text-lg'>${transaction.amount}</td>
                                                             </tr>
@@ -119,7 +119,7 @@ function DashboardTracker() {
   )
 
   function addTransaction(e,Id){
-        const amount = e.target.previousSibling.value
+        let amount = e.target.previousSibling.value
         if(isNaN(amount)){
             return false
         }
@@ -140,6 +140,11 @@ function DashboardTracker() {
         ).then(res=>{
             if(res.status == 200){
                 dispatch(queryTrackers(!trackerQuery))
+                let tracker = document.getElementById(Id)
+                if(tracker.childNodes[4].childNodes[0]){
+                    tracker.childNodes[4].childNodes[0].value = ''
+                }
+                
             }
         }).catch(error=>{
             console.log(error)

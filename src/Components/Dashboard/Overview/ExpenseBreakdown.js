@@ -36,10 +36,12 @@ function ExpenseBreakdown() {
           expenses.length > 0 ?
           <table className='w-full table-auto text-FTwhite'>
             <thead className='border-b border-FTblack'>
-              <th className='w-[100px] py-2'>Date</th>
-              <th className='w-[100px] py-2'>Expense</th>
-              <th className='w-[100px] py-2'>Cost</th>
-              <th className='w-[30px] py-2'>Delete</th>
+              <tr>
+                <th className='w-[100px] py-2'>Date</th>
+                <th className='w-[100px] py-2'>Expense</th>
+                <th className='w-[100px] py-2'>Cost</th>
+                <th className='w-[30px] py-2'>Delete</th>
+              </tr>
             </thead>
             <tbody>
             {
