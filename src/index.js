@@ -12,7 +12,7 @@ import Dashboard from './Pages/Dashboard';
 import { store } from './Redux/store'
 import { Provider, useSelector } from 'react-redux'
 import NotFound from './Pages/NotFound';
-
+import PasswordReset from './Pages/PasswordReset';
 
 
 
@@ -37,6 +37,10 @@ function Router(){
       element : <SignInUp />
     },
     {
+      path : "/Authentication/ResetPassword",
+      element : <PasswordReset />
+    },
+    {
       path : "/*",
       element : <NotFound />
     },
@@ -54,6 +58,14 @@ function Router(){
     {
       path : "/Authentication/SignUp",
       element : <SignInUp />
+    },
+    {
+      path : "/Authentication/ResetPassword",
+      element : <PasswordReset />
+    },
+    {
+      path : "/Authentication/ResetPassword?toke:id&id:userId",
+      element : <PasswordReset />
     },
     {
       path : "/*",

@@ -4,7 +4,9 @@ import axios from 'axios'
 
 import { useDispatch } from 'react-redux'
 import { addUser, currentUserData } from '../Redux/Slices/userSlice'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { FiArrowLeft } from 'react-icons/fi'
 
 function SignInUp() {
 
@@ -78,6 +80,7 @@ function SignInUp() {
                             <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack hover:cursor-pointer' type='button' value='SignUp' onClick={()=>SignUp()}></input>
                         </div>  
                     </form>
+                    <Link to='/' className='basis-3/4 text-center m-auto text-FTwhite flex item-center justify-center'><FiArrowLeft className='mt-1'/>Back</Link>
                     {
                         error == "Loading" ? <h1 className='px-10 text-FTwhite text-xl text-center'>{error}...</h1> : <h1 className='px-10 text-red-600 text-xl text-center'>{error}</h1>
                     } 
@@ -117,18 +120,20 @@ function SignInUp() {
         }
         return (
             <div className='bg-FTblack min-h-screen w-full flex flex-wrap justify-center items-center'>
-                <div className='bg-FTgray w-11/12 h-[450px] md:w-1/2' >
-                    <h1 className='text-center my-5 text-lg text-FTwhite'>Welcome back!</h1>
-                    <form className='h-[250px] px-10 flex flex-wrap mt-16'>
+                <div className='bg-FTgray w-11/12 h-[450px] md:w-[500px]' >
+                    <h1 className='text-center my-5 text-2xl text-FTwhite'>Welcome back!</h1>
+                    <form className='h-[250px] px-10 flex flex-wrap mt-16 justify-center'>
                         <div className='basis-full flex justify-center'>
-                            <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Email' type='text' onChange={(e)=>setEmail(e.target.value)}></input>
+                            <input className='h-10 rounded-md w-full md:w-11/12' placeholder='Email' type='text' onChange={(e)=>setEmail(e.target.value)}></input>
                         </div>
                         <div className='basis-full flex justify-center'>
-                            <input className='h-10 rounded-md w-full md:w-1/2' placeholder='Password' type='password' onChange={(e)=>setPassword(e.target.value)}></input>
+                            <input className='h-10 rounded-md w-full md:w-11/12' placeholder='Password' type='password' onChange={(e)=>setPassword(e.target.value)}></input>
                         </div>
                         <div className='basis-full h-14 text-center' >
                             <input className='px-8 py-1 bg-FTgreen rounded-lg text-FTblack hover:cursor-pointer' type='button' value='LogIn' onClick={()=>LogIn()}></input>
                         </div> 
+                        <h1 className='text-FTwhite text-center'>Forgot your password click <Link to='/Authentication/ResetPassword' className='text-FTgreen border-b border-FTgreen'>here</Link></h1>
+                        <Link to='/' className='basis-3/4 text-center m-auto text-FTwhite flex item-center justify-center'><FiArrowLeft className='mt-1'/>Back</Link>
                     </form>
                     {
                         error == "Loading" ? <h1 className='px-10 text-FTwhite text-xl text-center'>{error}...</h1> : <h1 className='px-10 text-red-600 text-xl text-center'>{error}</h1>
@@ -140,7 +145,6 @@ function SignInUp() {
 
   return (
     <>
-        <NavBar className='basis-full'/>
         {
             window.location.pathname === "/Authentication/SignUp" &&
             <SignUpDisplay />
