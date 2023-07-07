@@ -4,7 +4,7 @@ import HandWithMoney from '../../Images/3d-render-hand-with-coins-bills-isolated
 
 function Hero() {
   return (
-    <div className='w-full h-full flex flex-wrap justify-center md:flex-wrap-reverse md:mt-24'>
+    <div className='w-full h-full flex flex-wrap justify-center md:flex-wrap-reverse mt-16 md:mt-36'>
             <div className='text-FTwhite pl-10 basis-full md:basis-1/2'>
                 <h1
                 className='text-4xl mb-3'>Introducing a new way<br></br> to do finances</h1>
@@ -17,8 +17,8 @@ function Hero() {
                 className='bg-FTgreen text-FTwhite p-2 px-7 text-xl rounded-3xl ml-5'
                 >Get Started <b>&gt;</b></Link>
             </div>
-            <div className='text-FTwhite md:basis-1/2'>
-                <figure className='w-full sm:pl-20 lg:pl-10'>
+            <div className='text-FTwhite md:basis-1/2 mt-12 md:mt-0'>
+                <figure className='w-full pl-5 sm:pl-20 lg:pl-10'>
                     <img src={HandWithMoney}></img>
                 </figure>
             </div>

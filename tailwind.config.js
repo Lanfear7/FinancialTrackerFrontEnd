@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        FTblack : "#060412",
+        FTblack : "#0f0b26",
         FTgray : "#393E46",
         FTgrayFade : "#393e46a8",
         FTgreen : "#7f3ddb",
