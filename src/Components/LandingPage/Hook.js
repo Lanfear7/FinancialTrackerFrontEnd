@@ -4,7 +4,7 @@ import BarGraph from '../../Images/BarGraph.png'
 function Hook() {
   return (
     <>
-    <div className='flex flex-wrap mt-36 md:mt-80 items-center text-white w-full'>
+    <div className='flex flex-wrap mt-36 md:mt-56 items-center text-white w-full'>
       <div className='md:basis-1/2 px-2 pl-10 basis-full flex items-center text-4xl md:justify-start md:pl-40'>
         <figure className='min-w-[200px] max-w-[350px] h-[300px]'>
             <img className='h-full w-full' src={StackOfMoney}></img>

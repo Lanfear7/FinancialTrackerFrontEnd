@@ -7,7 +7,8 @@ module.exports = {
         FTgray : "#393E46",
         FTgrayFade : "#393e46a8",
         FTgreen : "#7f3ddb",
-        FTwhite : "#EAEAEA"
+        FTwhite : "#EAEAEA",
+        FTMediumPurple : "#211438" 
       }
     },
     screens: {

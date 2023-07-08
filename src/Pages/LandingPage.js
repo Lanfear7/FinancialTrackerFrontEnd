@@ -3,6 +3,7 @@ import NavBar from '../Components/NavBar'
 import Hero from '../Components/LandingPage/Hero'
 import Hook from '../Components/LandingPage/Hook'
 import About from '../Components/LandingPage/About'
+import Cards from '../Components/LandingPage/Cards'
 
 
 function LandingPage() {
@@ -11,6 +12,7 @@ function LandingPage() {
         <NavBar className='basis-full'/>
         <Hero />
         <About />
+        <Cards />
         <Hook />
     </div>
   )
